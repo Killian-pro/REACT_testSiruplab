@@ -5,8 +5,8 @@ import noImage from '../Img/noImage.png'
 function Book({ oneBook }) {
     const navigate = useNavigate();
 
-    const goBookById = (id) => {
-        navigate('/ChapterList', { state: { id: id } })
+    const goBookById = (id, name) => {
+        navigate('/ChapterList', { state: { id: id, name: name } })
     };
 
     return (

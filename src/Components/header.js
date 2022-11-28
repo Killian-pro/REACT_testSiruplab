@@ -3,7 +3,7 @@ import React from "react";
 function Header({ name, search, setSearch }) {
     return (
         <div className={'flex w-full items-center bg-gray-200 h-20'}>
-            <div className='ml-4 flex-1'>lelivrescolaire.fr</div>
+            <a href="/" className='ml-4 w-1/4'>lelivrescolaire.fr</a>
             <div className='ml-4 flex-1'>{name}</div>
 
 
