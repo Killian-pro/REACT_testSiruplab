@@ -5,12 +5,12 @@ import noImage from '../Img/noImage.png'
 function Book({ oneBook }) {
     const navigate = useNavigate();
 
-    const goBookById = (id) => {
-        navigate('/ChapterList', { state: { id: id } })
+    const goBookById = (id, name) => {
+        navigate('/ChapterList', { state: { id: id, name: name } })
     };
 
     return (
-        <div class={oneBook?.valid ? 'flex p-4 items-center w-1/2' : 'flex p-4 items-center w-1/2 bg-gray-600'} onClick={() => { if (oneBook?.valid) goBookById(oneBook?.id) }}>
+        <div class={oneBook?.valid ? 'flex p-4 items-center w-1/2' : 'flex p-4 items-center w-1/2 bg-gray-600'} onClick={() => { if (oneBook?.valid) goBookById(oneBook?.id, oneBook?.displayTitle) }}>
             <img class='w-16' src={oneBook?.url} />
             <div>
                 <div class='ml-2'>{oneBook?.displayTitle}</div>

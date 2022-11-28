@@ -2,7 +2,19 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Chapter from "../Components/chapter";
+import Header from "../Components/header";
 
+
+
+function searchWord(nameKey, myArray) {
+    let tmp = [];
+    myArray.map(it => {
+        if (it?.displayTitle?.toLowerCase().includes(nameKey?.toLowerCase())) {
+            tmp.push(it);
+        }
+    })
+    return tmp;
+}
 
 
 function ListBooks() {
@@ -10,6 +22,7 @@ function ListBooks() {
     const navigate = useNavigate();
     const [arrayChapter, setArrayChapter] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [search, setSearch] = useState(null);
 
 
 
@@ -29,23 +42,28 @@ function ListBooks() {
 
 
     async function fetch_chapter() {
-        const response = await axios.post(`https://api.lelivrescolaire.fr/graphql`, {
+        let response = await axios.post(`https://api.lelivrescolaire.fr/graphql`, {
             query: "query chapters($bookId:Int){viewer{chapters(bookIds:[$bookId]){hits{id title url valid}}}}",
             variables: {
                 bookId: state?.id,
             },
         });
-        setArrayChapter(response?.data?.data?.viewer?.chapters?.hits)
+        response = response?.data?.data?.viewer?.chapters?.hits.sort((a, b) => a.id - b.id);
+        console.log(response)
+        setArrayChapter(response)
     }
 
 
     return (
-        <div class='flex  flex-wrap'>
-            {isLoading ? arrayChapter?.map(it =>
-                <div class='w-1/3 h-40'>
-                    <Chapter oneChapter={it} />
-                </div>
-            ) : <></>}
+        <div>
+            <Header name={'Les chapitres de ' + state?.name} search={search} setSearch={setSearch} />
+            <div class='flex  flex-wrap'>
+                {isLoading ? arrayChapter?.map((it, index) =>
+                    <div key={index} class='w-1/3 h-20'>
+                        <Chapter oneChapter={it} index={index} />
+                    </div>
+                ) : <></>}
+            </div>
         </div>
     );
 }

@@ -3,8 +3,8 @@ import React from "react";
 function Header({ name, search, setSearch }) {
     return (
         <div class={'flex w-full items-center bg-gray-200 h-20'}>
-            <div class='ml-4 flex-1'>lelivrescolaire.fr</div>
-            <div class='ml-4 flex-1'>{name}</div>
+            <a href="/" class='ml-4 w-1/4'>lelivrescolaire.fr</a>
+            <div class='ml-4 flex-1 truncate '>{name}</div>
 
 
             <form class="flex items-center mr-8">
