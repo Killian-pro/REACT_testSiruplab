@@ -4,7 +4,7 @@ function romanize(num) { if (isNaN(num)) return NaN; var digits = String(+num).s
 
 function Chapter({ oneChapter, index }) {
     return (
-        <div className={oneChapter?.valid ? 'flex w-full' : 'flex w-full  bg-gray-500 opacity-70'}>
+        <div className={oneChapter?.valid ? 'flex w-full items-center p-4items-center p-4' : 'flex w-full items-center p-4  bg-gray-500 opacity-70'}>
             <img class='w-20 h-16 mr-2' src={oneChapter?.url} />
             <div class=' w-auto min-w-max  font-bold'>{romanize(index)} - </div>
             <div class='truncate'>{oneChapter?.title}</div>

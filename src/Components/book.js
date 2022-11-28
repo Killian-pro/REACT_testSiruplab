@@ -10,7 +10,7 @@ function Book({ oneBook }) {
     };
 
     return (
-        <div className={oneBook?.valid ? 'flex p-4 items-center w-1/2  hover:bg-sky-200 ' : 'flex p-4 items-center w-1/2 bg-gray-500 opacity-70'} onClick={() => { if (oneBook?.valid) goBookById(oneBook?.id) }}>
+        <div className={oneBook?.valid ? 'flex p-4 items-center w-1/2  hover:bg-sky-200 ' : 'flex p-4 items-center w-1/2 bg-gray-500 opacity-70'} onClick={() => { if (oneBook?.valid) goBookById(oneBook?.id, oneBook?.displayTitle) }}>
             <img className='w-16' src={oneBook?.url ? oneBook?.url : noImage} />
             <div className='flex flex-col flex-1'>
                 <div className='ml-2'>{oneBook?.displayTitle}</div>
