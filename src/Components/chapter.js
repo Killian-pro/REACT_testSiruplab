@@ -2,10 +2,10 @@ import React from "react";
 
 function Chapter({ oneChapter }) {
     return (
-        <div>
-            <div>{oneChapter?.title}</div>
+        <div class={'flex w-full'}>
             <img class='w-16' src={oneChapter?.url} />
-            <div> {oneChapter?.valid}</div>
+            <div>{oneChapter?.title}</div>
+            {console.log(oneChapter)}
         </div>
     );
 }

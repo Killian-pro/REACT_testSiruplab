@@ -40,9 +40,9 @@ function ListBooks() {
 
 
     return (
-        <div >
+        <div class='flex  flex-wrap'>
             {isLoading ? arrayChapter?.map(it =>
-                <div>
+                <div class='w-1/3 h-40'>
                     <Chapter oneChapter={it} />
                 </div>
             ) : <></>}
