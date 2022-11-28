@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Book from "../Components/book";
+import Header from "../Components/header";
+
+
+
+function searchWord(nameKey, myArray) {
+    let tmp = [];
+    myArray.map(it => {
+        if (it?.displayTitle?.toLowerCase().includes(nameKey?.toLowerCase())) {
+            tmp.push(it);
+        }
+    })
+    return tmp;
+}
+
 
 function ListBooks() {
     const [arrayBook, setArrayBook] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [nbBook, setNbBook] = useState(0);
+    const [search, setSearch] = useState(null);
 
 
     useEffect(() => {
@@ -23,17 +39,41 @@ function ListBooks() {
             query: "query{viewer{books{hits{id displayTitle url subjects{name}levels{name}valid}}}}",
         });
         setArrayBook(response?.data?.data?.viewer?.books?.hits)
+        setNbBook(response?.data?.data?.viewer?.books?.hits?.length)
+    }
+
+    function showBook10() {
+        let tmp = []
+        for (let index = 0; index < 10; index++) {
+            tmp.push(arrayBook[index])
+        }
+        return tmp
     }
 
 
     return (
-        <div >
-            {isLoading ? arrayBook?.map(it =>
-                <div>
-                    <Book oneBook={it} />
-                </div>
-            ) : <></>}
-        </div>
+        <div>
+            <Header name={'Les livres'} search={search} setSearch={setSearch} />
+            <div class='h-fit' >
+                {isLoading ?
+                    search ?
+                        <div class='flex flex-wrap'>
+                            {searchWord(search, arrayBook).map((items, index) =>
+                                <Book oneBook={items} />
+                            )}
+                        </div>
+                        :
+                        <div class='flex flex-wrap'>
+                            {arrayBook.map(it =>
+                                <Book oneBook={it} />
+                            )}
+                        </div>
+                    : <></>}
+            </div>
+            {/* <div class='flex w-full h-16 items-center bg-gray-200 justify-center'>
+                {nbBook / 10}
+            </div> */}
+        </div >
     );
 }
 
