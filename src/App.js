@@ -1,10 +1,14 @@
-import ListBooks from "./Screen/listBooks";
+import { Routes, Route } from "react-router-dom";
+import BooksList from "./Screen/booksList";
+import ChapterList from "./Screen/chapterList";
+
 
 function App() {
   return (
-    <div >
-      <ListBooks />
-    </div>
+    <Routes>
+      <Route path="/" element={<BooksList />} />
+      <Route path="/ChapterList" element={<ChapterList />} />
+    </Routes>
   );
 }
 
