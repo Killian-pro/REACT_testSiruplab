@@ -5,22 +5,15 @@ import Header from "../Components/header";
 
 
 
-function searchWord(nameKey, myArray) {
-    let tmp = [];
-    myArray.map(it => {
-        if (it?.displayTitle?.toLowerCase().includes(nameKey?.toLowerCase())) {
-            tmp.push(it);
-        }
-    })
-    return tmp;
-}
-
-
 function ListBooks() {
     const [arrayBook, setArrayBook] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [nbBook, setNbBook] = useState(0);
     const [search, setSearch] = useState(null);
+    const [subjects, setSubjects] = useState(null);
+    const [Lvl, setLvl] = useState(null);
+    const [selectsubjects, setSelectSubjects] = useState("");
+    const [selectLvl, setSelectLvl] = useState("");
 
 
     useEffect(() => {
@@ -35,11 +28,20 @@ function ListBooks() {
 
     async function fetch_book() {
         setIsLoading(false)
-        const response = await axios.post(`https://api.lelivrescolaire.fr/graphql`, {
+        let tmpSubject = [];
+        let tmpLvl = [];
+        let response = await axios.post(`https://api.lelivrescolaire.fr/graphql`, {
             query: "query{viewer{books{hits{id displayTitle url subjects{name}levels{name}valid}}}}",
         });
-        setArrayBook(response?.data?.data?.viewer?.books?.hits)
-        setNbBook(response?.data?.data?.viewer?.books?.hits?.length)
+        response = response?.data?.data?.viewer?.books?.hits
+        setArrayBook(response)
+        setNbBook(response?.length)
+        response.map(it => tmpSubject.push(it.subjects[0]?.name))
+        response.map(it => tmpLvl.push(it.levels[0]?.name))
+        var uniqueSubject = tmpSubject.filter((x, i) => tmpSubject.indexOf(x) === i);
+        var uniqueLvl = tmpLvl.filter((x, i) => tmpLvl.indexOf(x) === i);
+        setSubjects(uniqueSubject)
+        setLvl(uniqueLvl)
     }
 
     function showBook10() {
@@ -51,14 +53,72 @@ function ListBooks() {
     }
 
 
+    function searchBook(books) {
+        let tmp = [...books];
+        if (selectsubjects !== "" && selectLvl !== "") {
+            console.log('les 2')
+            tmp = books.filter(it => it.subjects[0]?.name.includes(selectsubjects) && it.levels[0]?.name.includes(selectLvl))
+            if (search) {
+                return tmp.filter(it => it.displayTitle?.toLowerCase()?.includes(search.toLowerCase()))
+            }
+            else return tmp
+        }
+        else if (selectsubjects !== "") {
+            console.log('suj')
+
+            tmp = books.filter(it => it.subjects[0]?.name.includes(selectsubjects))
+            if (search) {
+                return tmp.filter(it => it.displayTitle?.toLowerCase()?.includes(search.toLowerCase()))
+            }
+            else return tmp
+        }
+        else if (selectLvl !== "") {
+            console.log('lvl')
+
+            tmp = books.filter(it => it.levels[0]?.name.includes(selectLvl));
+            if (search) {
+                return tmp.filter(it => it.displayTitle?.toLowerCase()?.includes(search.toLowerCase()))
+            }
+            else return tmp
+        } else {
+            return books.filter((it) =>
+                it.displayTitle?.toLowerCase()?.includes(search.toLowerCase())
+            );
+        }
+    };
+
     return (
         <div>
             <Header name={'Les livres'} search={search} setSearch={setSearch} />
+            <div class='flex'>
+                <select
+                    onChange={(e) => setSelectLvl(e.target.value)}
+                    className="w-1/2 p-4 m-4 shadow-md bg-white outline-none border border-gray-400 focus:border-gray-300 focus:border"
+                >
+                    <option value="">Niveau</option>
+                    {Lvl?.map((it) => (
+                        <option value={it}>
+                            {it}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    onChange={(e) => setSelectSubjects(e.target.value)}
+                    className="w-1/2 p-4  m-4  shadow-md bg-white outline-none border border-gray-400 focus:border-gray-300 focus:border"
+                >
+                    <option value="">Matière</option>
+                    {subjects?.map((it) => (
+                        <option value={it}>
+                            {it}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <div class='h-fit' >
                 {isLoading ?
-                    search ?
+                    search || selectsubjects || selectLvl ?
                         <div class='flex flex-wrap'>
-                            {searchWord(search, arrayBook).map((items, index) =>
+                            {searchBook(arrayBook).map((items, index) =>
                                 <Book oneBook={items} />
                             )}
                         </div>
