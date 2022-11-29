@@ -52,18 +52,18 @@ function ListBooks() {
 
     return (
         <div>
-            <Header name={'Les chapitres de ' + state?.name} search={search} setSearch={setSearch} />
+            <Header name={state?.name} search={search} setSearch={setSearch} />
             <div className='flex  flex-wrap'>
                 {isLoading ?
                     search ?
                         searchWord(search, arrayChapter).map((items, index) =>
-                            <div className='w-1/3 h-40'>
+                            <div className='w-1/3'>
                                 <Chapter oneChapter={items} index={index} />
                             </div>
                         )
                         :
                         arrayChapter.map((items, index) =>
-                            <div className='w-1/3 h-40'>
+                            <div className='w-1/3'>
                                 <Chapter oneChapter={items} index={index} />
                             </div>
                         )

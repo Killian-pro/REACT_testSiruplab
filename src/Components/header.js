@@ -1,10 +1,11 @@
 import React from "react";
+import logo from '../Img/logo.svg'
 
 function Header({ name, setSearch }) {
     return (
         <div className={'flex w-full items-center bg-gray-200 h-20'}>
-            <a href="/" className='ml-4 w-1/4'>lelivrescolaire.fr</a>
-            <div className='ml-4 flex-1'>{name}</div>
+            <a href="/" className='ml-4 w-1/6'><img src={logo} /></a>
+            <div className='flex-1 text-center font-bold truncate mx-4'>{name}</div>
             <form className="flex items-center mr-8">
                 <label for="voice-search" className="sr-only">Search</label>
                 <div className="relative w-full">
