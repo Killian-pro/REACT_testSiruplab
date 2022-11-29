@@ -5,9 +5,8 @@ import Chapter from "../Components/chapter";
 import Header from "../Components/header";
 
 
-
 function searchWord(nameKey, myArray) {
-    let tmp = [];
+    const tmp = [];
     myArray.map(it => {
         if (it?.title?.toLowerCase().includes(nameKey?.toLowerCase())) {
             tmp.push(it);
@@ -23,8 +22,6 @@ function ListBooks() {
     const [arrayChapter, setArrayChapter] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [search, setSearch] = useState(null);
-
-
 
     useEffect(() => {
         if (state?.id) {
@@ -49,7 +46,6 @@ function ListBooks() {
             },
         });
         response = response?.data?.data?.viewer?.chapters?.hits.sort((a, b) => a.id - b.id);
-        console.log(response)
         setArrayChapter(response)
     }
 
